@@ -1,0 +1,7 @@
+{
+  "name": "VetPlan",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
