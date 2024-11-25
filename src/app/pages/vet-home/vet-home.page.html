@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Portal Veterinario</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="segmentValue" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="calendario">
+      <ion-label>Calendario</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="citas">
+      <ion-label>Lista de Citas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="mascotas">
+      <ion-label>Mascotas</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Vista de Calendario -->
+  <div *ngIf="segmentValue === 'calendario'" class="ion-padding">
+    <ion-datetime [value]="selectedDate" (ionChange)="onDateChanged($event)" presentation="date" locale="es-ES">
+    </ion-datetime>
+
+    <div class="citas-dia">
+      <h2 class="ion-padding">Citas del día {{ selectedDate | date:'dd/MM/yyyy' }}</h2>
+
+      <ion-list>
+        <ion-item *ngFor="let cita of citasDelDia" button (click)="verDetalleCita(cita)">
+          <ion-label>
+            <h2>{{ cita.fecha | date:'HH:mm' }} - {{ getMascotaInfo(cita.mascotaId)?.nombre }}</h2>
+            <p>Motivo: {{ cita.motivo }}</p>
+            <p>Estado: {{ cita.estado }}</p>
+          </ion-label>
+          <ion-buttons slot="end">
+            <ion-button (click)="modificarCita(cita); $event.stopPropagation()">
+              <ion-icon slot="icon-only" name="create-outline" color="primary"></ion-icon>
+            </ion-button>
+            <ion-button (click)="eliminarCita(cita.id); $event.stopPropagation()">
+              <ion-icon slot="icon-only" name="trash-outline" color="danger"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+
+      <ion-text color="medium" class="ion-text-center" *ngIf="citasDelDia.length === 0">
+        <p>No hay citas programadas para este día</p>
+      </ion-text>
+    </div>
+  </div>
+
+  <!-- Vista de Lista de Citas -->
+  <div *ngIf="segmentValue === 'citas'">
+    <ion-list>
+      <ion-item-sliding *ngFor="let cita of citas">
+        <ion-item button (click)="verDetalleCita(cita)">
+          <ion-label>
+            <h2>Fecha: {{cita.fecha | date:'dd/MM/yyyy HH:mm'}}</h2>
+            <h3>Mascota: {{getMascotaInfo(cita.mascotaId)?.nombre}}</h3>
+            <p>Motivo: {{cita.motivo}}</p>
+            <p>Estado: {{cita.estado}}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="modificarCita(cita)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="eliminarCita(cita.id)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <ion-text color="medium" class="ion-padding ion-text-center" *ngIf="citas.length === 0">
+      <h2>No hay citas programadas</h2>
+    </ion-text>
+  </div>
+
+  <!-- Vista de Mascotas -->
+  <div *ngIf="segmentValue === 'mascotas'">
+    <ion-list>
+      <ion-item *ngFor="let mascota of mascotas">
+        <ion-label>
+          <h2>{{mascota.nombre}}</h2>
+          <h3>Especie: {{mascota.especie}}</h3>
+          <p>Raza: {{mascota.raza}}</p>
+          <p>Edad: {{mascota.edad}} años</p>
+          <p>Fecha de nacimiento: {{mascota.fechaNacimiento | date:'dd/MM/yyyy'}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-text color="medium" class="ion-padding ion-text-center" *ngIf="mascotas.length === 0">
+      <h2>No hay mascotas registradas</h2>
+    </ion-text>
+  </div>
+  <ion-footer class="ion-no-border">
+    <ion-toolbar>
+      <ion-button expand="block" color="danger" (click)="logout()" class="ion-padding">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Cerrar Sesión
+      </ion-button>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

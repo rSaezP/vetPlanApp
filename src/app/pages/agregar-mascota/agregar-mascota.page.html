@@ -1,0 +1,25 @@
+<!-- src/app/pages/agregar-mascota/agregar-mascota.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar Mascota</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Raza</ion-label>
+    <ion-input [(ngModel)]="raza"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Edad</ion-label>
+    <ion-input type="number" [(ngModel)]="edad"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="agregarMascota()">Agregar Mascota</ion-button>
+</ion-content>

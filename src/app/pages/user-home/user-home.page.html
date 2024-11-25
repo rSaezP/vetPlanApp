@@ -1,0 +1,45 @@
+<!-- src/app/pages/user-home/user-home.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      V E T P L A N
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="welcome-container">
+    <h2 class="welcome-message" *ngIf="userName !== 'Usuario'">
+      Bienvenido, {{userName}}
+    </h2>
+    <h2 class="welcome-message" *ngIf="userName === 'Usuario'">
+      <ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text>
+    </h2>
+  </div>
+  <div *ngIf="mascotas.length > 0">
+    <h3>Tus Mascotas</h3>
+    <ion-list>
+      <ion-item *ngFor="let mascota of mascotas">
+        <ion-label>
+          <h2>{{mascota.nombre}}</h2>
+          <p>- {{mascota.especie}}</p>
+          <p>Edad: {{mascota.edad}} años</p>
+        </ion-label>
+        <ion-button (click)="abrirModalEdicion(mascota)">
+          <ion-icon name="create-outline"></ion-icon>
+          Editar
+        </ion-button>
+        <ion-button color="danger" (click)="eliminarMascota(mascota)">
+          <ion-icon name="trash-outline"></ion-icon>
+          Eliminar
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button routerLink="/agregar-mascota">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
